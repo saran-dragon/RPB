@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
@@ -10,7 +10,7 @@ import ServiceArea from './pages/ServiceArea';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
+// import ProtectedRoute from './components/ProtectedRoute';
 import Preloader from './components/Preloader'; // ✅ Import your custom preloader
 
 function App() {
