@@ -1,4 +1,5 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState } from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
 import { motion } from 'framer-motion';
 import {
   Phone, Mail, MapPin, Clock,
@@ -157,8 +158,44 @@ const Booking = () => {
 
   return (
     <div className="pt-20">
-      {/* Top Sections unchanged (contact info, hero, etc.) */}
-      {/* ... Paste your full layout and contact info UI sections here ... */}
+      {/* Hero Section */}
+      <section className="bg-gradient-to-r from-primary to-primary-light text-white py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center"
+          >
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
+            <p className="text-xl text-gray-200 max-w-3xl mx-auto">
+              Ready to transform your space? Get in touch with us for a free consultation and personalized quote.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Contact Info Cards */}
+      <section className="py-12 bg-light">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {contactInfo.map((info, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow duration-300"
+              >
+                <info.icon className="h-10 w-10 text-primary mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-primary mb-2">{info.title}</h3>
+                <p className="text-primary font-medium mb-1">{info.details}</p>
+                <p className="text-sm text-gray-600">{info.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Booking Form */}
       <section className="py-20 bg-white">
@@ -184,8 +221,92 @@ const Booking = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="bg-light p-8 rounded-xl shadow-lg space-y-6"
           >
-            {/* Name, Phone, Location, ServiceType, Message Inputs (same as your original) */}
-            {/* File Upload */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
+                  Full Name *
+                </label>
+                <input
+                  type="text"
+                  name="fullName"
+                  id="fullName"
+                  required
+                  value={formData.fullName}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+                  placeholder="Enter your name"
+                />
+              </div>
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                  Phone *
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  id="phone"
+                  required
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+                  placeholder="Enter phone number"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+                  Location *
+                </label>
+                <input
+                  type="text"
+                  name="location"
+                  id="location"
+                  required
+                  value={formData.location}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+                  placeholder="Your area / city"
+                />
+              </div>
+              <div>
+                <label htmlFor="serviceType" className="block text-sm font-medium text-gray-700 mb-2">
+                  Service Type *
+                </label>
+                <select
+                  name="serviceType"
+                  id="serviceType"
+                  required
+                  value={formData.serviceType}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+                >
+                  <option value="">Select a service</option>
+                  {serviceTypes.map((type, index) => (
+                    <option key={index} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                Message
+              </label>
+              <textarea
+                name="message"
+                id="message"
+                rows={4}
+                value={formData.message}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+                placeholder="Describe your requirements"
+              />
+            </div>
+
             <div>
               <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-2">
                 Upload Image (Optional)
@@ -210,7 +331,6 @@ const Booking = () => {
                   </div>
                 </label>
               </div>
-
               {imagePreview && (
                 <div className="mt-4">
                   <img
@@ -222,7 +342,6 @@ const Booking = () => {
               )}
             </div>
 
-            {/* Submit Status Message */}
             {submitStatus && (
               <div className={`p-4 rounded-lg flex items-center space-x-2 ${
                 submitStatus.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
