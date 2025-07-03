@@ -1,11 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Filter } from 'lucide-react';
 
+interface GalleryImage {
+  _id: string;
+  title: string;
+  image: string;
+}
+
 const Gallery = () => {
-  const [images, setImages] = useState([]);
-  const [filteredImages, setFilteredImages] = useState([]);
+  const [images, setImages] = useState<GalleryImage[]>([]);
+  const [filteredImages, setFilteredImages] = useState<GalleryImage[]>([]);
   const [filter, setFilter] = useState('All');
+  const [zoomedImage, setZoomedImage] = useState<GalleryImage | null>(null);
 
   const categories = [
     { label: 'All', value: 'All' },
@@ -17,7 +24,7 @@ const Gallery = () => {
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/gallery`)
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: GalleryImage[]) => {
         setImages(data);
         setFilteredImages(data);
       })
@@ -30,7 +37,7 @@ const Gallery = () => {
     } else {
       setFilteredImages(
         images.filter((img) =>
-          img.title?.toLowerCase().includes(filter.toLowerCase())
+          img.title.toLowerCase().includes(filter.toLowerCase())
         )
       );
     }
@@ -47,9 +54,7 @@ const Gallery = () => {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Our Gallery
-            </h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">Our Gallery</h1>
             <p className="text-xl text-gray-200 max-w-3xl mx-auto">
               Explore our portfolio of completed projects showcasing our craftsmanship 
               and attention to detail across residential and commercial properties.
@@ -94,18 +99,14 @@ const Gallery = () => {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden"
+                className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden cursor-pointer"
+                onClick={() => setZoomedImage(img)}
               >
                 <img
                   src={`${import.meta.env.VITE_API_URL}${img.image}`}
                   alt={img.title}
                   className="w-full h-48 object-cover"
                 />
-                {/* {img.title && (
-                  <p className="text-center text-gray-700 py-2 text-sm font-medium capitalize">
-                    {img.title}
-                  </p>
-                )} */}
               </motion.div>
             ))}
           </motion.div>
@@ -119,6 +120,20 @@ const Gallery = () => {
           )}
         </div>
       </section>
+
+      {/* Zoom Modal */}
+      {zoomedImage && (
+        <div
+          className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center"
+          onClick={() => setZoomedImage(null)}
+        >
+          <img
+            src={`${import.meta.env.VITE_API_URL}${zoomedImage.image}`}
+            alt={zoomedImage.title}
+            className="max-w-[90%] max-h-[90%] rounded-lg shadow-lg"
+          />
+        </div>
+      )}
     </div>
   );
 };
