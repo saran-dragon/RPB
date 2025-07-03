@@ -1,8 +1,8 @@
-import React from 'react';
+// import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Crown, Shield, Paintbrush, Home as HomeIcon, Building, Palette, Star, ArrowRight } from 'lucide-react';
+import { Crown, Shield, Paintbrush, Home as HomeIcon, Building, Palette, ArrowRight } from 'lucide-react';
 
 const Home = () => {
   const [heroRef, heroInView] = useInView({ triggerOnce: true });
