@@ -1,11 +1,11 @@
-import React, { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 
 interface PrivateRouteProps {
   children: ReactNode;
 }
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
+const PrivateRoute = ({ children }: PrivateRouteProps) => {
   const token = localStorage.getItem('adminToken');
   return token ? <>{children}</> : <Navigate to="/admin/login" replace />;
 };
