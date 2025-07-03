@@ -30,6 +30,10 @@ mongoose.connect(process.env.MONGO_URI, {
 })
 .catch((err) => console.error('❌ DB Error:', err));
 
+app.get('/', (req, res) => {
+  res.send('✅ Server is live!');
+});
+
 // Routes
 import bookingRoutes from './routes/bookingRoutes.js';
 import galleryRoutes from './routes/gallery.js';      // Public: GET /api/gallery
